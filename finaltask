@@ -1,0 +1,50 @@
+import java.util.*;
+
+public class Phonebook {
+    public static void main(String[] args) {
+        // Создание HashMap для хранения пары имя-список телефонов
+        HashMap<String, List<String>> phonebook = new HashMap<>();
+
+        // Добавление записей в телефонную книгу
+        addEntry(phonebook, "John", "1234567890");
+        addEntry(phonebook, "Emily", "987654321");
+        addEntry(phonebook, "John", "5555555555");
+        addEntry(phonebook, "Sophia", "1111111111");
+        addEntry(phonebook, "Emily", "9999999999");
+        addEntry(phonebook, "John", "2222222222");
+
+        // Вывод телефонной книги, отсортированной по убыванию числа телефонов
+        printPhonebook(phonebook);
+    }
+
+    // Метод добавления записи в телефонную книгу
+    public static void addEntry(HashMap<String, List<String>> phonebook, String name, String phone) {
+        // Если имя уже существует в книге, добавляем телефон к списку
+        if (phonebook.containsKey(name)) {
+            List<String> phones = phonebook.get(name);
+            phones.add(phone);
+            phonebook.put(name, phones);
+        } else {
+            // Если имя не существует, создаем новую запись в книге с одним телефоном
+            List<String> phones = new ArrayList<>();
+            phones.add(phone);
+            phonebook.put(name, phones);
+        }
+    }
+
+    // Метод вывода телефонной книги, отсортированной по убыванию числа телефонов
+    public static void printPhonebook(HashMap<String, List<String>> phonebook) {
+        // Создаем объект TreeSet для сортировки записей
+        TreeSet<Map.Entry<String, List<String>>> sortedPhonebook = new TreeSet<>((entry1, entry2) ->
+                Integer.compare(entry2.getValue().size(), entry1.getValue().size()));
+
+        sortedPhonebook.addAll(phonebook.entrySet());
+
+        // Выводим отсортированную телефонную книгу
+        for (Map.Entry<String, List<String>> entry : sortedPhonebook) {
+            System.out.println("Name: " + entry.getKey());
+            System.out.println("Phones: " + entry.getValue());
+            System.out.println();
+        }
+    }
+}
